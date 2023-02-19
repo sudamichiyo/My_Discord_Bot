@@ -1,5 +1,6 @@
 # This example requires the 'message_content' intent.
 
+from keep_alive import keep_alive
 import discord
 import os
 from dotenv import load_dotenv
@@ -25,5 +26,5 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-
+keep_alive()
 client.run(os.environ['DISCORD_TOKEN'])
