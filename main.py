@@ -15,8 +15,8 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         print(f'Message from {message.author}: {message.content}')
 
-        # メッセージを書いた人がBotのUSER_IDなら処理終了
-        if message.author.id == int(os.environ['BOT_USER_ID']):
+        # メッセージを書いた人がBotなら処理終了
+        if message.author.bot:
         # if message.author.id != int(os.environ['MY_USER_ID']): #自分で確認する用
             return
         channel = message.channel 
@@ -31,8 +31,8 @@ class MyClient(discord.Client):
        
         erai_reply = [
             'えらい',
-            '普通かな'
-            'エラーイ'
+            '普通かな',
+            'エラーイ',
             'できて当然じゃない？'
         ]
         #メッセージ送信者が自分の場合
@@ -40,8 +40,10 @@ class MyClient(discord.Client):
             if 'えらい' in message.content or '偉い' in message.content:
                 await channel.send('えらい！！！')
         #メッセージ送信者が特定のUSER_IDの場合
-        if message.author.id == int(os.environ['USER_ID']):
-            if 'えらい' in message.content or '偉い' in message.content:
+        if message.author.id == int(os.environ['MY_USER_ID']):
+            if 'すだっち' in message.content and ('えらい'in message.content or '偉い'in message.content):
+                await channel.send('えらい！！！')
+            if '私' in message.content and ('えらい'in message.content or '偉い'in message.content):
                 await channel.send(random.choice(erai_reply))
 
 intents = discord.Intents.default()
