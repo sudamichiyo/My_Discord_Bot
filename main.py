@@ -1,10 +1,12 @@
 # This example requires the 'message_content' intent.
 
-from keep_alive import keep_alive
+# keep_aliveは本番環境で実行するときのみ必要？
+# from keep_alive import keep_alive
 import discord
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import random
 
 class MyClient(discord.Client):
     async def on_ready(self):
@@ -13,18 +15,38 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         print(f'Message from {message.author}: {message.content}')
 
-        # メッセージを書いた人がHaruki InoueのUSER_ID以外なら処理終了
-        if message.author.id != int(os.environ['USER_ID']):
+        # メッセージを書いた人がBotのUSER_IDなら処理終了
+        if message.author.id == int(os.environ['BOT_USER_ID']):
+        # if message.author.id != int(os.environ['MY_USER_ID']): #自分で確認する用
             return
         channel = message.channel 
-        topic = '起きた' #反応する文字列
-        text = 'おはよう' #返信する文字列
-        if message.content == topic:
-            await channel.send(text)
+        # topic = '起きた' #反応する文字列
+        # text = 'おはよう' #返信する文字列
+        if message.content == '起きた':
+            await channel.send('おはよう')
+        if '終わった' in message.content or 'おわった' in message.content or '疲れた' in message.content or 'つかれた' in message.content:
+            await channel.send('お疲れ様')
+        if 'ありがとう' in message.content:
+            await channel.send('どういたしまして')
+       
+        erai_reply = [
+            'えらい',
+            '普通かな'
+            'エラーイ'
+            'できて当然じゃない？'
+        ]
+        #メッセージ送信者が自分の場合
+        if message.author.id == int(os.environ['MY_USER_ID']):
+            if 'えらい' in message.content or '偉い' in message.content:
+                await channel.send('えらい！！！')
+        #メッセージ送信者が特定のUSER_IDの場合
+        if message.author.id == int(os.environ['USER_ID']):
+            if 'えらい' in message.content or '偉い' in message.content:
+                await channel.send(random.choice(erai_reply))
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 client = MyClient(intents=intents)
-keep_alive()
+# keep_alive()
 client.run(os.environ['DISCORD_TOKEN'])
