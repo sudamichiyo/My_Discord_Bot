@@ -40,7 +40,7 @@ class MyClient(discord.Client):
             if 'えらい' in message.content or '偉い' in message.content:
                 await channel.send('えらい！！！')
         #メッセージ送信者が特定のUSER_IDの場合
-        if message.author.id == int(os.environ['MY_USER_ID']):
+        if message.author.id == int(os.environ['USER_ID']):
             if 'すだっち' in message.content and ('えらい'in message.content or '偉い'in message.content):
                 await channel.send('えらい！！！')
             if '私' in message.content and ('えらい'in message.content or '偉い'in message.content):
