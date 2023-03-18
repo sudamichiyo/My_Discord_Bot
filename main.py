@@ -28,12 +28,18 @@ class MyClient(discord.Client):
             await channel.send('お疲れ様')
         if 'ありがとう' in message.content:
             await channel.send('どういたしまして')
+        if '見た' in message.content or 'みた' in message.content:
+            await channel.send('なに見てんだ')
        
         erai_reply = [
             'えらい',
             '普通かな',
             'エラーイ',
             'できて当然じゃない？'
+        ]
+        yabai_message_reply = [
+            '通常運転',
+            '今日も元気ですね'
         ]
         #メッセージ送信者が自分の場合
         if message.author.id == int(os.environ['MY_USER_ID']):
@@ -45,6 +51,10 @@ class MyClient(discord.Client):
                 await channel.send('えらい！！！')
             if '私' in message.content and ('えらい'in message.content or '偉い'in message.content):
                 await channel.send(random.choice(erai_reply))
+
+        #特定のチャンネルにメッセージが送信された場合のみBotが返事を返す
+        if channel.id == int(os.environ['YABAI_CHANNEL_ID']):
+            await channel.send(random.choice(yabai_message_reply))
 
 intents = discord.Intents.default()
 intents.message_content = True
